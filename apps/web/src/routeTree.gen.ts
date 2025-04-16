@@ -15,17 +15,18 @@ import { Route as TodosImport } from './routes/todos'
 import { Route as LoginImport } from './routes/login'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as IndexImport } from './routes/index'
-import { Route as LoginTestImport } from './routes/login.test'
 import { Route as gameDataGameDataImport } from './routes/(gameData)/gameData'
 import { Route as collectionCollectionImport } from './routes/(collection)/collection'
 import { Route as characterCharacterImport } from './routes/(character)/character'
 import { Route as gameDataGameDataRealmstatusImport } from './routes/(gameData)/gameData.realmstatus'
 import { Route as gameDataGameDataItemsearchImport } from './routes/(gameData)/gameData.itemsearch'
+import { Route as gameDataGameDataClassesImport } from './routes/(gameData)/gameData.classes'
 import { Route as gameDataGameDataAuctionhouseImport } from './routes/(gameData)/gameData.auctionhouse'
 import { Route as collectionCollectionToysImport } from './routes/(collection)/collection.toys'
 import { Route as collectionCollectionMountsImport } from './routes/(collection)/collection.mounts'
+import { Route as collectionCollectionHeirloomsImport } from './routes/(collection)/collection.heirlooms'
 import { Route as collectionCollectionBattlepetsImport } from './routes/(collection)/collection.battlepets'
-import { Route as collectionCollectionAppearanceImport } from './routes/(collection)/collection.appearance'
+import { Route as collectionCollectionAppearancesImport } from './routes/(collection)/collection.appearances'
 import { Route as characterCharacterTalentsImport } from './routes/(character)/character.talents'
 import { Route as characterCharacterOverviewImport } from './routes/(character)/character.overview'
 import { Route as characterCharacterGearImport } from './routes/(character)/character.gear'
@@ -54,12 +55,6 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
-
-const LoginTestRoute = LoginTestImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => LoginRoute,
 } as any)
 
 const gameDataGameDataRoute = gameDataGameDataImport.update({
@@ -95,6 +90,12 @@ const gameDataGameDataItemsearchRoute = gameDataGameDataItemsearchImport.update(
   } as any,
 )
 
+const gameDataGameDataClassesRoute = gameDataGameDataClassesImport.update({
+  id: '/classes',
+  path: '/classes',
+  getParentRoute: () => gameDataGameDataRoute,
+} as any)
+
 const gameDataGameDataAuctionhouseRoute =
   gameDataGameDataAuctionhouseImport.update({
     id: '/auctionhouse',
@@ -116,6 +117,13 @@ const collectionCollectionMountsRoute = collectionCollectionMountsImport.update(
   } as any,
 )
 
+const collectionCollectionHeirloomsRoute =
+  collectionCollectionHeirloomsImport.update({
+    id: '/heirlooms',
+    path: '/heirlooms',
+    getParentRoute: () => collectionCollectionRoute,
+  } as any)
+
 const collectionCollectionBattlepetsRoute =
   collectionCollectionBattlepetsImport.update({
     id: '/battlepets',
@@ -123,10 +131,10 @@ const collectionCollectionBattlepetsRoute =
     getParentRoute: () => collectionCollectionRoute,
   } as any)
 
-const collectionCollectionAppearanceRoute =
-  collectionCollectionAppearanceImport.update({
-    id: '/appearance',
-    path: '/appearance',
+const collectionCollectionAppearancesRoute =
+  collectionCollectionAppearancesImport.update({
+    id: '/appearances',
+    path: '/appearances',
     getParentRoute: () => collectionCollectionRoute,
   } as any)
 
@@ -203,13 +211,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof gameDataGameDataImport
       parentRoute: typeof rootRoute
     }
-    '/login/test': {
-      id: '/login/test'
-      path: '/test'
-      fullPath: '/login/test'
-      preLoaderRoute: typeof LoginTestImport
-      parentRoute: typeof LoginImport
-    }
     '/(character)/character/gear': {
       id: '/(character)/character/gear'
       path: '/gear'
@@ -231,11 +232,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof characterCharacterTalentsImport
       parentRoute: typeof characterCharacterImport
     }
-    '/(collection)/collection/appearance': {
-      id: '/(collection)/collection/appearance'
-      path: '/appearance'
-      fullPath: '/collection/appearance'
-      preLoaderRoute: typeof collectionCollectionAppearanceImport
+    '/(collection)/collection/appearances': {
+      id: '/(collection)/collection/appearances'
+      path: '/appearances'
+      fullPath: '/collection/appearances'
+      preLoaderRoute: typeof collectionCollectionAppearancesImport
       parentRoute: typeof collectionCollectionImport
     }
     '/(collection)/collection/battlepets': {
@@ -243,6 +244,13 @@ declare module '@tanstack/react-router' {
       path: '/battlepets'
       fullPath: '/collection/battlepets'
       preLoaderRoute: typeof collectionCollectionBattlepetsImport
+      parentRoute: typeof collectionCollectionImport
+    }
+    '/(collection)/collection/heirlooms': {
+      id: '/(collection)/collection/heirlooms'
+      path: '/heirlooms'
+      fullPath: '/collection/heirlooms'
+      preLoaderRoute: typeof collectionCollectionHeirloomsImport
       parentRoute: typeof collectionCollectionImport
     }
     '/(collection)/collection/mounts': {
@@ -266,6 +274,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof gameDataGameDataAuctionhouseImport
       parentRoute: typeof gameDataGameDataImport
     }
+    '/(gameData)/gameData/classes': {
+      id: '/(gameData)/gameData/classes'
+      path: '/classes'
+      fullPath: '/gameData/classes'
+      preLoaderRoute: typeof gameDataGameDataClassesImport
+      parentRoute: typeof gameDataGameDataImport
+    }
     '/(gameData)/gameData/itemsearch': {
       id: '/(gameData)/gameData/itemsearch'
       path: '/itemsearch'
@@ -285,16 +300,6 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface LoginRouteChildren {
-  LoginTestRoute: typeof LoginTestRoute
-}
-
-const LoginRouteChildren: LoginRouteChildren = {
-  LoginTestRoute: LoginTestRoute,
-}
-
-const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
-
 interface characterCharacterRouteChildren {
   characterCharacterGearRoute: typeof characterCharacterGearRoute
   characterCharacterOverviewRoute: typeof characterCharacterOverviewRoute
@@ -311,15 +316,17 @@ const characterCharacterRouteWithChildren =
   characterCharacterRoute._addFileChildren(characterCharacterRouteChildren)
 
 interface collectionCollectionRouteChildren {
-  collectionCollectionAppearanceRoute: typeof collectionCollectionAppearanceRoute
+  collectionCollectionAppearancesRoute: typeof collectionCollectionAppearancesRoute
   collectionCollectionBattlepetsRoute: typeof collectionCollectionBattlepetsRoute
+  collectionCollectionHeirloomsRoute: typeof collectionCollectionHeirloomsRoute
   collectionCollectionMountsRoute: typeof collectionCollectionMountsRoute
   collectionCollectionToysRoute: typeof collectionCollectionToysRoute
 }
 
 const collectionCollectionRouteChildren: collectionCollectionRouteChildren = {
-  collectionCollectionAppearanceRoute: collectionCollectionAppearanceRoute,
+  collectionCollectionAppearancesRoute: collectionCollectionAppearancesRoute,
   collectionCollectionBattlepetsRoute: collectionCollectionBattlepetsRoute,
+  collectionCollectionHeirloomsRoute: collectionCollectionHeirloomsRoute,
   collectionCollectionMountsRoute: collectionCollectionMountsRoute,
   collectionCollectionToysRoute: collectionCollectionToysRoute,
 }
@@ -329,12 +336,14 @@ const collectionCollectionRouteWithChildren =
 
 interface gameDataGameDataRouteChildren {
   gameDataGameDataAuctionhouseRoute: typeof gameDataGameDataAuctionhouseRoute
+  gameDataGameDataClassesRoute: typeof gameDataGameDataClassesRoute
   gameDataGameDataItemsearchRoute: typeof gameDataGameDataItemsearchRoute
   gameDataGameDataRealmstatusRoute: typeof gameDataGameDataRealmstatusRoute
 }
 
 const gameDataGameDataRouteChildren: gameDataGameDataRouteChildren = {
   gameDataGameDataAuctionhouseRoute: gameDataGameDataAuctionhouseRoute,
+  gameDataGameDataClassesRoute: gameDataGameDataClassesRoute,
   gameDataGameDataItemsearchRoute: gameDataGameDataItemsearchRoute,
   gameDataGameDataRealmstatusRoute: gameDataGameDataRealmstatusRoute,
 }
@@ -345,20 +354,21 @@ const gameDataGameDataRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRouteWithChildren
+  '/login': typeof LoginRoute
   '/todos': typeof TodosRoute
   '/character': typeof characterCharacterRouteWithChildren
   '/collection': typeof collectionCollectionRouteWithChildren
   '/gameData': typeof gameDataGameDataRouteWithChildren
-  '/login/test': typeof LoginTestRoute
   '/character/gear': typeof characterCharacterGearRoute
   '/character/overview': typeof characterCharacterOverviewRoute
   '/character/talents': typeof characterCharacterTalentsRoute
-  '/collection/appearance': typeof collectionCollectionAppearanceRoute
+  '/collection/appearances': typeof collectionCollectionAppearancesRoute
   '/collection/battlepets': typeof collectionCollectionBattlepetsRoute
+  '/collection/heirlooms': typeof collectionCollectionHeirloomsRoute
   '/collection/mounts': typeof collectionCollectionMountsRoute
   '/collection/toys': typeof collectionCollectionToysRoute
   '/gameData/auctionhouse': typeof gameDataGameDataAuctionhouseRoute
+  '/gameData/classes': typeof gameDataGameDataClassesRoute
   '/gameData/itemsearch': typeof gameDataGameDataItemsearchRoute
   '/gameData/realmstatus': typeof gameDataGameDataRealmstatusRoute
 }
@@ -366,20 +376,21 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRouteWithChildren
+  '/login': typeof LoginRoute
   '/todos': typeof TodosRoute
   '/character': typeof characterCharacterRouteWithChildren
   '/collection': typeof collectionCollectionRouteWithChildren
   '/gameData': typeof gameDataGameDataRouteWithChildren
-  '/login/test': typeof LoginTestRoute
   '/character/gear': typeof characterCharacterGearRoute
   '/character/overview': typeof characterCharacterOverviewRoute
   '/character/talents': typeof characterCharacterTalentsRoute
-  '/collection/appearance': typeof collectionCollectionAppearanceRoute
+  '/collection/appearances': typeof collectionCollectionAppearancesRoute
   '/collection/battlepets': typeof collectionCollectionBattlepetsRoute
+  '/collection/heirlooms': typeof collectionCollectionHeirloomsRoute
   '/collection/mounts': typeof collectionCollectionMountsRoute
   '/collection/toys': typeof collectionCollectionToysRoute
   '/gameData/auctionhouse': typeof gameDataGameDataAuctionhouseRoute
+  '/gameData/classes': typeof gameDataGameDataClassesRoute
   '/gameData/itemsearch': typeof gameDataGameDataItemsearchRoute
   '/gameData/realmstatus': typeof gameDataGameDataRealmstatusRoute
 }
@@ -388,20 +399,21 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRouteWithChildren
+  '/login': typeof LoginRoute
   '/todos': typeof TodosRoute
   '/(character)/character': typeof characterCharacterRouteWithChildren
   '/(collection)/collection': typeof collectionCollectionRouteWithChildren
   '/(gameData)/gameData': typeof gameDataGameDataRouteWithChildren
-  '/login/test': typeof LoginTestRoute
   '/(character)/character/gear': typeof characterCharacterGearRoute
   '/(character)/character/overview': typeof characterCharacterOverviewRoute
   '/(character)/character/talents': typeof characterCharacterTalentsRoute
-  '/(collection)/collection/appearance': typeof collectionCollectionAppearanceRoute
+  '/(collection)/collection/appearances': typeof collectionCollectionAppearancesRoute
   '/(collection)/collection/battlepets': typeof collectionCollectionBattlepetsRoute
+  '/(collection)/collection/heirlooms': typeof collectionCollectionHeirloomsRoute
   '/(collection)/collection/mounts': typeof collectionCollectionMountsRoute
   '/(collection)/collection/toys': typeof collectionCollectionToysRoute
   '/(gameData)/gameData/auctionhouse': typeof gameDataGameDataAuctionhouseRoute
+  '/(gameData)/gameData/classes': typeof gameDataGameDataClassesRoute
   '/(gameData)/gameData/itemsearch': typeof gameDataGameDataItemsearchRoute
   '/(gameData)/gameData/realmstatus': typeof gameDataGameDataRealmstatusRoute
 }
@@ -416,15 +428,16 @@ export interface FileRouteTypes {
     | '/character'
     | '/collection'
     | '/gameData'
-    | '/login/test'
     | '/character/gear'
     | '/character/overview'
     | '/character/talents'
-    | '/collection/appearance'
+    | '/collection/appearances'
     | '/collection/battlepets'
+    | '/collection/heirlooms'
     | '/collection/mounts'
     | '/collection/toys'
     | '/gameData/auctionhouse'
+    | '/gameData/classes'
     | '/gameData/itemsearch'
     | '/gameData/realmstatus'
   fileRoutesByTo: FileRoutesByTo
@@ -436,15 +449,16 @@ export interface FileRouteTypes {
     | '/character'
     | '/collection'
     | '/gameData'
-    | '/login/test'
     | '/character/gear'
     | '/character/overview'
     | '/character/talents'
-    | '/collection/appearance'
+    | '/collection/appearances'
     | '/collection/battlepets'
+    | '/collection/heirlooms'
     | '/collection/mounts'
     | '/collection/toys'
     | '/gameData/auctionhouse'
+    | '/gameData/classes'
     | '/gameData/itemsearch'
     | '/gameData/realmstatus'
   id:
@@ -456,15 +470,16 @@ export interface FileRouteTypes {
     | '/(character)/character'
     | '/(collection)/collection'
     | '/(gameData)/gameData'
-    | '/login/test'
     | '/(character)/character/gear'
     | '/(character)/character/overview'
     | '/(character)/character/talents'
-    | '/(collection)/collection/appearance'
+    | '/(collection)/collection/appearances'
     | '/(collection)/collection/battlepets'
+    | '/(collection)/collection/heirlooms'
     | '/(collection)/collection/mounts'
     | '/(collection)/collection/toys'
     | '/(gameData)/gameData/auctionhouse'
+    | '/(gameData)/gameData/classes'
     | '/(gameData)/gameData/itemsearch'
     | '/(gameData)/gameData/realmstatus'
   fileRoutesById: FileRoutesById
@@ -473,7 +488,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
-  LoginRoute: typeof LoginRouteWithChildren
+  LoginRoute: typeof LoginRoute
   TodosRoute: typeof TodosRoute
   characterCharacterRoute: typeof characterCharacterRouteWithChildren
   collectionCollectionRoute: typeof collectionCollectionRouteWithChildren
@@ -483,7 +498,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
-  LoginRoute: LoginRouteWithChildren,
+  LoginRoute: LoginRoute,
   TodosRoute: TodosRoute,
   characterCharacterRoute: characterCharacterRouteWithChildren,
   collectionCollectionRoute: collectionCollectionRouteWithChildren,
@@ -516,10 +531,7 @@ export const routeTree = rootRoute
       "filePath": "dashboard.tsx"
     },
     "/login": {
-      "filePath": "login.tsx",
-      "children": [
-        "/login/test"
-      ]
+      "filePath": "login.tsx"
     },
     "/todos": {
       "filePath": "todos.tsx"
@@ -535,8 +547,9 @@ export const routeTree = rootRoute
     "/(collection)/collection": {
       "filePath": "(collection)/collection.tsx",
       "children": [
-        "/(collection)/collection/appearance",
+        "/(collection)/collection/appearances",
         "/(collection)/collection/battlepets",
+        "/(collection)/collection/heirlooms",
         "/(collection)/collection/mounts",
         "/(collection)/collection/toys"
       ]
@@ -545,13 +558,10 @@ export const routeTree = rootRoute
       "filePath": "(gameData)/gameData.tsx",
       "children": [
         "/(gameData)/gameData/auctionhouse",
+        "/(gameData)/gameData/classes",
         "/(gameData)/gameData/itemsearch",
         "/(gameData)/gameData/realmstatus"
       ]
-    },
-    "/login/test": {
-      "filePath": "login.test.tsx",
-      "parent": "/login"
     },
     "/(character)/character/gear": {
       "filePath": "(character)/character.gear.tsx",
@@ -565,12 +575,16 @@ export const routeTree = rootRoute
       "filePath": "(character)/character.talents.tsx",
       "parent": "/(character)/character"
     },
-    "/(collection)/collection/appearance": {
-      "filePath": "(collection)/collection.appearance.tsx",
+    "/(collection)/collection/appearances": {
+      "filePath": "(collection)/collection.appearances.tsx",
       "parent": "/(collection)/collection"
     },
     "/(collection)/collection/battlepets": {
       "filePath": "(collection)/collection.battlepets.tsx",
+      "parent": "/(collection)/collection"
+    },
+    "/(collection)/collection/heirlooms": {
+      "filePath": "(collection)/collection.heirlooms.tsx",
       "parent": "/(collection)/collection"
     },
     "/(collection)/collection/mounts": {
@@ -583,6 +597,10 @@ export const routeTree = rootRoute
     },
     "/(gameData)/gameData/auctionhouse": {
       "filePath": "(gameData)/gameData.auctionhouse.tsx",
+      "parent": "/(gameData)/gameData"
+    },
+    "/(gameData)/gameData/classes": {
+      "filePath": "(gameData)/gameData.classes.tsx",
       "parent": "/(gameData)/gameData"
     },
     "/(gameData)/gameData/itemsearch": {
