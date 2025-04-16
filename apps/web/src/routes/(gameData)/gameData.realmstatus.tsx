@@ -8,7 +8,6 @@ export const Route = createFileRoute('/(gameData)/gameData/realmstatus')({
 function RouteComponent() {
   return (
     <div>
-      <h1>Realm Status</h1>
       <GetBlizzardRealms />
     </div>
   );

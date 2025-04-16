@@ -1,56 +1,86 @@
-
 import { useState } from "react";
 import { trpc } from "@/utils/trpc";
 import { useQuery } from "@tanstack/react-query"; 
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import { Button } from "@/components/ui/button";
 
 
 export default function getBlizzardRealms() {
   const [region, setRegion] = useState("eu"); 
 
-  const realmIndexQuery = useQuery(
-    trpc.blizzard.getRealmIndex.queryOptions(
+  const realmIndexQuery = useQuery({
+    ...trpc.blizzard.getRealmIndex.queryOptions(
       { region },
       {
-        staleTime: 5 * 60 * 1000, 
+        staleTime: 5 * 60 * 1000,
       },
     ),
-  );
+    enabled: true,
+  });
 
   return (
     <div>
-      <h1>WoW Collection</h1>
-
-      <div>
+      <h1 className="mb-4 font-semibold text-2xl">Realm Status : </h1>
+      <div className="flex justify-between mb-8">
         <label>
-          Select Region:
-          <select value={region} onChange={(e) => setRegion(e.target.value)}>
-            <option value="us">US</option>
-            <option value="eu">EU</option>
-          </select>
+          <Select value={region} onValueChange={setRegion}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Server" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="eu">EU</SelectItem>
+            </SelectContent>
+          </Select>
         </label>
-        <button
-          onClick={() => realmIndexQuery.refetch()}
-          disabled={realmIndexQuery.isFetching}
-        >
-          {realmIndexQuery.isFetching ? "Fetching..." : "Fetch Realms"}
-        </button>
+        <Button onClick={() => realmIndexQuery.refetch()}>
+          {realmIndexQuery.isFetched ? "Refetch" : "Fetching..."}
+        </Button>
       </div>
 
       {realmIndexQuery.isLoading && <p>Loading realms...</p>}
       {realmIndexQuery.isError && (
         <p>Error loading realms: {realmIndexQuery.error.message}</p>
       )}
-      {realmIndexQuery.isSuccess && ( // Use isSuccess for successful data
-        <div>
-          <h2>Realms ({region.toUpperCase()})</h2>
-          <ul>
+      {realmIndexQuery.isSuccess && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="font-semibold text-lg">
+                Realm Name
+              </TableHead>
+              <TableHead className="font-semibold text-lg">ID</TableHead>
+              <TableHead className="font-semibold text-lg">
+                Realm Slug
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {(realmIndexQuery.data as any)?.realms?.map((realm: any) => (
-              <li key={realm.id}>
-                {realm.name.fr_FR} ({realm.slug}) - ID: {realm.id}
-              </li>
+              <TableRow key={realm.id}>
+                <TableCell>{realm.name.fr_FR}</TableCell>
+                <TableCell>{realm.id}</TableCell>
+                <TableCell>{realm.slug}</TableCell>
+              </TableRow>
             ))}
-          </ul>
-        </div>
+          </TableBody>
+        </Table>
       )}
     </div>
   );
