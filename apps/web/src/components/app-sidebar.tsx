@@ -35,87 +35,64 @@ const data = {
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Character",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "overview",
+          url: "/character/overview",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "gear",
+          url: "/character/gear",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "talents",
+          url: "/character/talents",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Collections",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "Mounts",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Battle Pets",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Appearances",
+          url: "#",
+        },
+        {
+          title: "Achievements",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Game Data",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "Auction House",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Item search",
           url: "#",
         },
         {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Realm Status",
+          url: "gameData/realmstatus",
         },
       ],
     },
@@ -149,7 +126,7 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (

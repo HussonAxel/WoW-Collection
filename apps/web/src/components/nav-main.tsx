@@ -60,7 +60,7 @@ export function NavMain({
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
                             <a href={subItem.url}>
-                              <span>{subItem.title}</span>
+                              <span className="capitalize">{subItem.title}</span>
                             </a>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
